@@ -32,7 +32,7 @@
       <% } %>
       <div class="table-responsive">
         <%if(users != ""){%>
-        <table class="table table-striped text-center my-3 ">
+        <table class="table table-striped text-center my-3">
           <thead>
             <tr class="table-dark">
               <th>ID</th>
@@ -57,6 +57,7 @@
                 <a href="/edit/<%=row._id%>" class="text-success"
                   ><i class="fas fa-edit fa-lg mx-1"></i
                 ></a>
+
                 <a href="/delete/<%=row._id%>" class="text-success"
                   ><i class="fas fa-trash fa-lg mx-1"></i
                 ></a>
