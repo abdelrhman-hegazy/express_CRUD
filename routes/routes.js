@@ -7,6 +7,7 @@ const fs = require("fs");
 
 const users = require("../models/users");
 const { type } = require("os");
+const { log } = require("console");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -89,7 +90,7 @@ router.post("/update/:id", upload, (req, res) => {
   if (req.file) {
     new_image = req.file.filename;
     try {
-      fs.unlinkSync("./uploads" + req.params.old_image);
+      fs.unlinkSync("./uploads/" + req.params.old_image);
     } catch (error) {
       console.log(error);
     }
@@ -112,9 +113,32 @@ router.post("/update/:id", upload, (req, res) => {
           type: "success",
           message: "User update successfully!",
         };
-        res.redirect("/")
+        res.redirect("/");
       }
     }
   );
+});
+
+// delete user
+router.get("/delete/:id", (req, res) => {
+  let id = req.params.id;
+  User.findByIdAndDelete(id, (err, result) => {
+    if (result.image !== "") {
+      try {
+        fs.unlinkSync("./uploads/" + result.image);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    if (err) {
+      res.json({ message: err.message });
+    } else {
+      req.session.message = {
+        type: "info",
+        message: "User deleted successfully!",
+      };
+      res.redirect("/");
+    }
+  });
 });
 module.exports = router;
